@@ -22,7 +22,7 @@ class PlayService: NSObject {
     
     // Service type must be a unique string, at most 15 characters long
     // and can contain only ASCII lowercase letters, numbers and hyphens.
-    private let PlayServiceType = "antarctica-music-sharing"
+    private let PlayServiceType = "antarctica"
     
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private let serviceAdvertiser : MCNearbyServiceAdvertiser
