@@ -9,7 +9,15 @@
 import UIKit
 
 class ViewController: UIViewController {
-
+    
+    @IBOutlet weak var DeviceName: UILabel!
+    
+    let playService = PlayService()
+    
+    @IBAction func playTapped(_ sender: UIButton) {
+        print("Play tapped")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
