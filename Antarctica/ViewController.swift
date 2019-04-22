@@ -12,6 +12,8 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var DeviceName: UILabel!
     
+    let playService = PlayService()
+    
     @IBAction func playTapped(_ sender: UIButton) {
         print("Play tapped")
     }
