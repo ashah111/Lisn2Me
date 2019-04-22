@@ -17,12 +17,14 @@ class ViewController: UIViewController {
     
     @IBAction func playTapped(_ sender: UIButton) {
         print("Play tapped")
-        self.nowPlaying.text = "Reminder - The Weeknd"
-        playService.send(songUri: "Reminder - The Weeknd")
+        let songName = UIDevice.current.name
+        self.nowPlaying.text = songName
+        playService.send(songUri: songName)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        playService.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
     }
 }

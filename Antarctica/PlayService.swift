@@ -22,7 +22,7 @@ class PlayService: NSObject {
     
     // Service type must be a unique string, at most 15 characters long
     // and can contain only ASCII lowercase letters, numbers and hyphens.
-    private let PlayServiceType = "example-song-id"
+    private let PlayServiceType = "antarctica-music-sharing"
     
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private let serviceAdvertiser : MCNearbyServiceAdvertiser
@@ -30,7 +30,7 @@ class PlayService: NSObject {
     
     lazy var session : MCSession = {
         let session = MCSession(peer: myPeerId, securityIdentity: nil, encryptionPreference: .required)
-        session.delegate = self as! MCSessionDelegate
+        session.delegate = self as MCSessionDelegate
         return session
     }()
     
@@ -39,10 +39,10 @@ class PlayService: NSObject {
         self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: PlayServiceType)
         
         super.init()
-        self.serviceAdvertiser.delegate = self as! MCNearbyServiceAdvertiserDelegate
+        self.serviceAdvertiser.delegate = self as MCNearbyServiceAdvertiserDelegate
         self.serviceAdvertiser.startAdvertisingPeer()
         
-        self.serviceBrowser.delegate = self as! MCNearbyServiceBrowserDelegate
+        self.serviceBrowser.delegate = self as MCNearbyServiceBrowserDelegate
         self.serviceBrowser.startBrowsingForPeers()
     }
     
@@ -109,8 +109,8 @@ extension PlayService : MCSessionDelegate {
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         NSLog("%@", "didReceiveData: \(data)")
-        
         let str = String(data: data, encoding: .utf8)!
+        print("Song receivedd = \(str)")
         self.delegate?.playTapReceived(manager: self, songUri: str)
     }
     
