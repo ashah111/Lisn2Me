@@ -18,11 +18,14 @@ class ViewController: UIViewController {
     var session: SPTSession!
     var player: SPTAppRemotePlayerAPI?
     @IBOutlet weak var DeviceName: UILabel!
+    @IBOutlet weak var nowPlaying: UILabel!
     
     let playService = PlayService()
     
     @IBAction func playTapped(_ sender: UIButton) {
         print("Play tapped")
+        self.nowPlaying.text = "Reminder - The Weeknd"
+        playService.send(songUri: "Reminder - The Weeknd")
     }
     
     override func viewDidLoad() {
@@ -30,7 +33,22 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
   
     }
+}
 
-
+extension ViewController : PlayServiceDelegate {
+    
+    func connectedDevicesChanged(manager: PlayService, connectedDevices: [String]) {
+        OperationQueue.main.addOperation {
+            self.DeviceName.text = "\(connectedDevices)"
+        }
+    }
+    
+    func playTapReceived(manager: PlayService, songUri: String) {
+        OperationQueue.main.addOperation {
+            self.nowPlaying.text = songUri
+            print("Received song name = \(songUri)")
+        }
+    }
+    
 }
 
