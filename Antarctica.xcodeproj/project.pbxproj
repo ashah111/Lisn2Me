@@ -13,6 +13,7 @@
 		663E13EF2269022600C866AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 663E13EE2269022600C866AD /* Assets.xcassets */; };
 		663E13F22269022600C866AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 663E13F02269022600C866AD /* LaunchScreen.storyboard */; };
 		663E1407226E4FF200C866AD /* SpotifyiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 663E1406226E4FF200C866AD /* SpotifyiOS.framework */; };
+		663E1409226E5AC800C866AD /* SpotifyPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663E1408226E5AC800C866AD /* SpotifyPlayer.swift */; };
 		CE6BD814226E36CD00684C04 /* PlayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6BD813226E36CD00684C04 /* PlayService.swift */; };
 /* End PBXBuildFile section */
 
@@ -26,6 +27,7 @@
 		663E13F32269022600C866AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		663E13FE226E2DF700C866AD /* Antarctica-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antarctica-Bridging-Header.h"; sourceTree = "<group>"; };
 		663E1406226E4FF200C866AD /* SpotifyiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyiOS.framework; sourceTree = "<group>"; };
+		663E1408226E5AC800C866AD /* SpotifyPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyPlayer.swift; sourceTree = "<group>"; };
 		CE6BD813226E36CD00684C04 /* PlayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,6 +65,7 @@
 			children = (
 				663E13E72269022500C866AD /* AppDelegate.swift */,
 				663E13E92269022500C866AD /* ViewController.swift */,
+				663E1408226E5AC800C866AD /* SpotifyPlayer.swift */,
 				663E13EB2269022500C866AD /* Main.storyboard */,
 				663E13EE2269022600C866AD /* Assets.xcassets */,
 				663E13F02269022600C866AD /* LaunchScreen.storyboard */,
@@ -153,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				663E13EA2269022500C866AD /* ViewController.swift in Sources */,
+				663E1409226E5AC800C866AD /* SpotifyPlayer.swift in Sources */,
 				663E13E82269022500C866AD /* AppDelegate.swift in Sources */,
 				CE6BD814226E36CD00684C04 /* PlayService.swift in Sources */,
 			);

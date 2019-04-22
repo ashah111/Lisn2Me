@@ -12,6 +12,11 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate, SPTAppRemoteDelegate, SPTAppRemotePlayerStateDelegate {
 
     var window: UIWindow?
+    
+    let kCLientID = "01f5dc56a7e4490f882e0ac1dcf8d72d"
+    let kCallbackURL = "spotify-ios-quick-start://spotify-login-callback"
+    let kTokenSwapURL = "http://localhost:1234/swap"
+    let kTokenRefreshServiceURL = "http://localhost:1234/refresh"
 
     let SpotifyClientID = "[your spotify client id here]"
     let SpotifyRedirectURL = URL(string: "spotify-ios-quick-start://spotify-login-callback")!
@@ -46,6 +51,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         self.sessionManager.application(app, open: url, options: options)
+        let userDefaults = UserDefaults.standard
+        
+        do {
+            let sessionData = try NSKeyedArchiver.archivedData(withRootObject: self.sessionManager, requiringSecureCoding: false)
+            userDefaults.set(sessionData, forKey: "sessionData")
+            userDefaults.synchronize()
+        }catch{
+            print("error")
+        }
         return true
     }
 
