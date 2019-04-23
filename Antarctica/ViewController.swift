@@ -12,8 +12,25 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var DeviceName: UILabel!
     @IBOutlet weak var nowPlaying: UILabel!
+    @IBOutlet weak var connectionsLabel: UILabel!
+    @IBOutlet weak var goLiveLabel: UILabel!
+    @IBOutlet weak var goLiveSwitch: UISwitch!
     
     let playService = PlayService()
+    
+    
+    @IBAction func goLiveSwitchToggled(_ sender: UISwitch) {
+        
+        let isOn = sender.isOn == true
+        goLiveLabel.textColor = isOn ? UIColor.green : UIColor.red
+        
+        if (isOn) {
+            playService.goLive()
+        } else {
+            playService.goOffline()
+        }
+        
+    }
     
     @IBAction func playTapped(_ sender: UIButton) {
         print("Play tapped")
@@ -27,14 +44,19 @@ class ViewController: UIViewController {
         playService.delegate = self
         // Do any additional setup after loading the view, typically from a nib.
     }
+    
+    func refreshData(_ connectedDevices: [String]) {
+        OperationQueue.main.addOperation {
+            self.DeviceName.text = "\(connectedDevices)"
+            self.connectionsLabel.text = "Connections: \(self.playService.session.connectedPeers.count) Device(s) Connected!"
+        }
+    }
 }
 
 extension ViewController : PlayServiceDelegate {
     
     func connectedDevicesChanged(manager: PlayService, connectedDevices: [String]) {
-        OperationQueue.main.addOperation {
-            self.DeviceName.text = "\(connectedDevices)"
-        }
+        refreshData(connectedDevices)
     }
     
     func playTapReceived(manager: PlayService, songUri: String) {
