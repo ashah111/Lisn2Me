@@ -10,10 +10,8 @@ import Foundation
 import MultipeerConnectivity
 
 protocol PlayServiceDelegate {
-    
     func connectedDevicesChanged(manager : PlayService, connectedDevices: [String])
     func playTapReceived(manager : PlayService, songUri: String)
-    
 }
 
 class PlayService: NSObject {
@@ -22,7 +20,7 @@ class PlayService: NSObject {
     
     // Service type must be a unique string, at most 15 characters long
     // and can contain only ASCII lowercase letters, numbers and hyphens.
-    private let PlayServiceType = "example-song-id"
+    private let PlayServiceType = "antarctica-ios"
     
     private let myPeerId = MCPeerID(displayName: UIDevice.current.name)
     private let serviceAdvertiser : MCNearbyServiceAdvertiser
@@ -30,7 +28,7 @@ class PlayService: NSObject {
     
     lazy var session : MCSession = {
         let session = MCSession(peer: myPeerId, securityIdentity: nil, encryptionPreference: .required)
-        session.delegate = self as! MCSessionDelegate
+        session.delegate = self as MCSessionDelegate
         return session
     }()
     
@@ -39,16 +37,26 @@ class PlayService: NSObject {
         self.serviceBrowser = MCNearbyServiceBrowser(peer: myPeerId, serviceType: PlayServiceType)
         
         super.init()
-        self.serviceAdvertiser.delegate = self as! MCNearbyServiceAdvertiserDelegate
+        
+        goLive()
+    }
+    
+    public func goLive() {
+        self.serviceAdvertiser.delegate = self as MCNearbyServiceAdvertiserDelegate
         self.serviceAdvertiser.startAdvertisingPeer()
         
-        self.serviceBrowser.delegate = self as! MCNearbyServiceBrowserDelegate
+        self.serviceBrowser.delegate = self as MCNearbyServiceBrowserDelegate
         self.serviceBrowser.startBrowsingForPeers()
     }
     
-    deinit {
+    public func goOffline() {
         self.serviceAdvertiser.stopAdvertisingPeer()
         self.serviceBrowser.stopBrowsingForPeers()
+        self.session.disconnect()
+    }
+    
+    deinit {
+        goOffline()
     }
     
     func send(songUri : String) {
@@ -89,10 +97,16 @@ extension PlayService : MCNearbyServiceBrowserDelegate {
         NSLog("%@", "foundPeer: \(peerID)")
         NSLog("%@", "invitePeer: \(peerID)")
         browser.invitePeer(peerID, to: self.session, withContext: nil, timeout: 10)
+        
+        self.delegate?.connectedDevicesChanged(manager: self, connectedDevices:
+            session.connectedPeers.map{$0.displayName})
     }
     
     func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         NSLog("%@", "lostPeer: \(peerID)")
+        
+        self.delegate?.connectedDevicesChanged(manager: self, connectedDevices:
+            session.connectedPeers.map{$0.displayName})
     }
     
 }
@@ -100,17 +114,31 @@ extension PlayService : MCNearbyServiceBrowserDelegate {
 extension PlayService : MCSessionDelegate {
     
     func session(_ session: MCSession, peer peerID: MCPeerID, didChange state: MCSessionState) {
+        NSLog("%@", "peer \(peerID) didChangeState: \(state.rawValue)")
         
         self.delegate?.connectedDevicesChanged(manager: self, connectedDevices:
             session.connectedPeers.map{$0.displayName})
         
-        NSLog("%@", "peer \(peerID) didChangeState: \(state.rawValue)")
+        
+        switch state {
+            case MCSessionState.connected:
+                print("Connected: \(peerID.displayName)")
+                break
+
+            case MCSessionState.connecting:
+                print("Connecting: \(peerID.displayName)")
+                break
+
+            case MCSessionState.notConnected:
+                print("Not Connected: \(peerID.displayName)")
+                break
+        }
     }
     
     func session(_ session: MCSession, didReceive data: Data, fromPeer peerID: MCPeerID) {
         NSLog("%@", "didReceiveData: \(data)")
-        
         let str = String(data: data, encoding: .utf8)!
+        print("Song receivedd = \(str)")
         self.delegate?.playTapReceived(manager: self, songUri: str)
     }
     
@@ -125,5 +153,4 @@ extension PlayService : MCSessionDelegate {
     func session(_ session: MCSession, didFinishReceivingResourceWithName resourceName: String, fromPeer peerID: MCPeerID, at localURL: URL?, withError error: Error?) {
         NSLog("%@", "didFinishReceivingResourceWithName")
     }
-    
 }
