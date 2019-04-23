@@ -26,6 +26,8 @@ class ViewController: UIViewController {
         print("Play tapped")
         self.nowPlaying.text = "Reminder - The Weeknd"
         playService.send(songUri: "Reminder - The Weeknd")
+        let player = SpotifyPlayerViewController()
+        player.getMusic()
     }
     
     override func viewDidLoad() {
@@ -47,6 +49,7 @@ extension ViewController : PlayServiceDelegate {
         OperationQueue.main.addOperation {
             self.nowPlaying.text = songUri
             print("Received song name = \(songUri)")
+            
         }
     }
     

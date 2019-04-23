@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     let kTokenSwapURL = "http://localhost:1234/swap"
     let kTokenRefreshServiceURL = "http://localhost:1234/refresh"
 
-    let SpotifyClientID = "[your spotify client id here]"
+    let SpotifyClientID = "01f5dc56a7e4490f882e0ac1dcf8d72d"
     let SpotifyRedirectURL = URL(string: "spotify-ios-quick-start://spotify-login-callback")!
     
     lazy var configuration = SPTConfiguration(
@@ -27,12 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     )
 
     lazy var sessionManager: SPTSessionManager = {
-        if let tokenSwapURL = URL(string: "https://[my token swap app domain]/api/token"),
-            let tokenRefreshURL = URL(string: "https://[my token swap app domain]/api/refresh_token") {
-            self.configuration.tokenSwapURL = tokenSwapURL
-            self.configuration.tokenRefreshURL = tokenRefreshURL
-            self.configuration.playURI = ""
-        }
+        self.configuration.playURI = ""
         let manager = SPTSessionManager(configuration: self.configuration, delegate: self)
         return manager
     }()
@@ -44,7 +39,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     }()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let requestedScopes: SPTScope = [.appRemoteControl]
+        let requestedScopes: SPTScope = [.appRemoteControl,.streaming]
         self.sessionManager.initiateSession(with: requestedScopes, options: .default)
         return true
     }
@@ -90,7 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
         self.appRemote.connectionParameters.accessToken = session.accessToken
         self.appRemote.connect()
-        
+        print("success")
     }
     func sessionManager(manager: SPTSessionManager, didFailWith error: Error) {
         print("fail", error)
