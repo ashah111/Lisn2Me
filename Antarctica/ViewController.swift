@@ -41,16 +41,9 @@ class ViewController: UIViewController {
     
     @IBAction func playTapped(_ sender: UIButton) {
         print("Play tapped")
-<<<<<<< HEAD
-        self.nowPlaying.text = "Reminder - The Weeknd"
-        playService.send(songUri: "Reminder - The Weeknd")
-        let player = SpotifyPlayerViewController()
-        player.getMusic()
-=======
         let songName = UIDevice.current.name
         self.nowPlaying.text = songName
         playService.send(songUri: songName)
->>>>>>> d2309aeee7c25f24138d53301a87a80e43ec7279
     }
     
     override func viewDidLoad() {
