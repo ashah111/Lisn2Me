@@ -21,11 +21,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     let SpotifyClientID = "01f5dc56a7e4490f882e0ac1dcf8d72d"
     let SpotifyRedirectURL = URL(string: "spotify-ios-quick-start://spotify-login-callback")!
     
+    static private let kAccessTokenKey = "access-token-key"
+    
+    
+    var accessToken = UserDefaults.standard.string(forKey: kAccessTokenKey) {
+        didSet {
+            let defaults = UserDefaults.standard
+            defaults.set(accessToken, forKey: AppDelegate.kAccessTokenKey)
+            defaults.synchronize()
+        }
+    }
+
+    
+    //holding the credentials provided for your app
     lazy var configuration = SPTConfiguration(
         clientID: SpotifyClientID,
         redirectURL: SpotifyRedirectURL
     )
 
+    //manages a Spotify user session, in the form of SPTSession.
+    //SPTSession
     lazy var sessionManager: SPTSessionManager = {
         self.configuration.playURI = ""
         let manager = SPTSessionManager(configuration: self.configuration, delegate: self)
@@ -35,23 +50,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     lazy var appRemote: SPTAppRemote = {
         let appRemote = SPTAppRemote(configuration: self.configuration, logLevel: .debug)
         appRemote.delegate = self
+        appRemote.connectionParameters.accessToken = self.accessToken
         return appRemote
     }()
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        //SPTScope represents the OAuth scopes that declare how your app wants to access a user’s account
         let requestedScopes: SPTScope = [.appRemoteControl,.streaming]
         self.sessionManager.initiateSession(with: requestedScopes, options: .default)
+        print("Session Manager Initiate Session")
         return true
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        self.sessionManager.application(app, open: url, options: options)
+        let parameters = appRemote.authorizationParameters(from: url)
+        
+        if let access_token = parameters?[SPTAppRemoteAccessTokenKey] {
+            appRemote.connectionParameters.accessToken = access_token
+            self.accessToken = access_token
+        } else if let error_description = parameters?[SPTAppRemoteErrorDescriptionKey] {
+            print("Error")
+        }
+        
+        let value = self.sessionManager.application(app, open: url, options: options)
+        print("self.sessionManager.application()")
         let userDefaults = UserDefaults.standard
         
         do {
             let sessionData = try NSKeyedArchiver.archivedData(withRootObject: self.sessionManager, requiringSecureCoding: false)
             userDefaults.set(sessionData, forKey: "sessionData")
             userDefaults.synchronize()
+            print("User Defaults synchronized")
         }catch{
             print("error")
         }
@@ -60,7 +89,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
 
     func applicationWillResignActive(_ application: UIApplication) {
         if self.appRemote.isConnected {
+            print("App Remote Disconnected")
             self.appRemote.disconnect()
+            
         }
     }
 
@@ -84,29 +115,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
         self.appRemote.connectionParameters.accessToken = session.accessToken
+        self.appRemote.delegate = self
         self.appRemote.connect()
-        print("success")
+        print("Session Manager Success")
     }
     func sessionManager(manager: SPTSessionManager, didFailWith error: Error) {
-        print("fail", error)
+        print("Session Manager Failure", error)
     }
     func sessionManager(manager: SPTSessionManager, didRenew session: SPTSession) {
-        print("renewed", session)
+        print("Session Manager Renewed", session)
     }
     
     func appRemoteDidEstablishConnection(_ appRemote: SPTAppRemote) {
         self.appRemote.playerAPI?.delegate = self
         self.appRemote.playerAPI?.subscribe(toPlayerState: { (result, error) in
-            if let error = error {
-                debugPrint(error.localizedDescription)
-            }
+           print("Error in App Remote Establish Connection")
         })
+        
+//        self.appRemote.userAPI?.delegate = self as! SPTAppRemoteUserAPIDelegate
+//        self.appRemote.userAPI?.subscribe(toPlayerState: { (result, error) in
+//            print("Error")
+//        })
     }
+    
     func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: Error?) {
-        print("disconnected")
+        print("App Remote Disconnected")
     }
     func appRemote(_ appRemote: SPTAppRemote, didFailConnectionAttemptWithError error: Error?) {
-        print("failed")
+        print("App Remote Failed")
     }
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         debugPrint("Track name: %@", playerState.track.name)
