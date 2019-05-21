@@ -68,16 +68,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         print("self.sessionManager.application()")
         self.sessionManager.application(app, open: url, options: options)
         
-//        let userDefaults = UserDefaults.standard
-//        
-//        do {
-//            let sessionData = try NSKeyedArchiver.archivedData(withRootObject: self.sessionManager, requiringSecureCoding: false)
-//            userDefaults.set(sessionData, forKey: "sessionData")
-//            userDefaults.synchronize()
-//            print("User Defaults synchronized")
-//        }catch{
-//            print("error")
-//        }
+        let userDefaults = UserDefaults.standard
+        
+        do {
+            let sessionData = try NSKeyedArchiver.archivedData(withRootObject: self.sessionManager, requiringSecureCoding: false)
+            userDefaults.set(sessionData, forKey: "sessionData")
+            userDefaults.synchronize()
+            print("User Defaults synchronized")
+        }catch{
+            print("error")
+        }
         return true
     }
 
@@ -125,11 +125,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
         self.appRemote.playerAPI?.subscribe(toPlayerState: { (result, error) in
            print("Error in App Remote Establish Connection")
         })
-        
-//        self.appRemote.userAPI?.delegate = self as! SPTAppRemoteUserAPIDelegate
-//        self.appRemote.userAPI?.subscribe(toPlayerState: { (result, error) in
-//            print("Error")
-//        })
     }
     
     func appRemote(_ appRemote: SPTAppRemote, didDisconnectWithError error: Error?) {
