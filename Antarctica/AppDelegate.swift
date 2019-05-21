@@ -110,6 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, SPTSessionManagerDelegate
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
         print("Session Manager Success")
         self.appRemote.connectionParameters.accessToken = session.accessToken
+        self.accessToken = session.accessToken
         self.appRemote.connect()
     }
     func sessionManager(manager: SPTSessionManager, didFailWith error: Error) {

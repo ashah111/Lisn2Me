@@ -7,16 +7,11 @@
 //
 
 import UIKit
+import Alamofire
 
 class ViewController: UIViewController {
+
     
-    let kCLientID = "01f5dc56a7e4490f882e0ac1dcf8d72d"
-    let kCallbackURL = "spotify-ios-quick-start://spotify-login-callback"
-    let kTokenSwapURL = "http://localhost:1234/swap"
-    let kTokenRefreshServiceURL = "http://localhost:1234/refresh"
-    
-    var session: SPTSession!
-    var player: SPTAppRemotePlayerAPI?
     @IBOutlet weak var DeviceName: UILabel!
     @IBOutlet weak var nowPlaying: UILabel!
     @IBOutlet weak var connectionsLabel: UILabel!
@@ -24,7 +19,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var goLiveSwitch: UISwitch!
     
     let playService = PlayService()
-    
     
     @IBAction func goLiveSwitchToggled(_ sender: UISwitch) {
         
@@ -41,7 +35,22 @@ class ViewController: UIViewController {
     
     @IBAction func playTapped(_ sender: UIButton) {
         print("Play tapped")
-        let songName = UIDevice.current.name
+        
+        //get access token
+        let userDefaults = UserDefaults.standard
+        if let access_token = userDefaults.string(forKey: "access-token-key"){
+            let headers: HTTPHeaders = [
+                "Authorization": "Bearer " + access_token,
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            ];
+            Alamofire.request("https://api.spotify.com/v1/me/player/currently-playing?market=ES",method: .get, headers: headers).responseJSON { (response) in
+                debugPrint(response)
+            }
+            
+        }
+        
+        let songName = "asdasda"
         self.nowPlaying.text = songName
         playService.send(songUri: songName)
     }

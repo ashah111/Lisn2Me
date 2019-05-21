@@ -6,5 +6,6 @@ target 'Antarctica' do
   use_frameworks!
 
   # Pods for Antarctica
+	pod 'Alamofire', '~> 4.7'
 
 end

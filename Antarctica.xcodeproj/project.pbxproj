@@ -14,6 +14,7 @@
 		663E13F22269022600C866AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 663E13F02269022600C866AD /* LaunchScreen.storyboard */; };
 		663E1407226E4FF200C866AD /* SpotifyiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 663E1406226E4FF200C866AD /* SpotifyiOS.framework */; };
 		663E1409226E5AC800C866AD /* SpotifyPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663E1408226E5AC800C866AD /* SpotifyPlayer.swift */; };
+		9B3D05B34615907E7E17EBFA /* Pods_Antarctica.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 98A3BC6A2DEB11A6BA8BD584 /* Pods_Antarctica.framework */; };
 		CE6BD814226E36CD00684C04 /* PlayService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6BD813226E36CD00684C04 /* PlayService.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +29,10 @@
 		663E13FE226E2DF700C866AD /* Antarctica-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Antarctica-Bridging-Header.h"; sourceTree = "<group>"; };
 		663E1406226E4FF200C866AD /* SpotifyiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyiOS.framework; sourceTree = "<group>"; };
 		663E1408226E5AC800C866AD /* SpotifyPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyPlayer.swift; sourceTree = "<group>"; };
+		98A3BC6A2DEB11A6BA8BD584 /* Pods_Antarctica.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Antarctica.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A4428EA2594AD044F74356A1 /* Pods-Antarctica.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Antarctica.release.xcconfig"; path = "Target Support Files/Pods-Antarctica/Pods-Antarctica.release.xcconfig"; sourceTree = "<group>"; };
 		CE6BD813226E36CD00684C04 /* PlayService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayService.swift; sourceTree = "<group>"; };
+		E5935455422E8DC4919A09E5 /* Pods-Antarctica.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Antarctica.debug.xcconfig"; path = "Target Support Files/Pods-Antarctica/Pods-Antarctica.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +41,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				663E1407226E4FF200C866AD /* SpotifyiOS.framework in Frameworks */,
+				9B3D05B34615907E7E17EBFA /* Pods_Antarctica.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,6 +54,7 @@
 				663E13E62269022500C866AD /* Antarctica */,
 				663E13E52269022400C866AD /* Products */,
 				663E1401226E35F900C866AD /* Frameworks */,
+				EE78E30D096EB6C8DE609148 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -80,8 +86,19 @@
 			isa = PBXGroup;
 			children = (
 				663E1406226E4FF200C866AD /* SpotifyiOS.framework */,
+				98A3BC6A2DEB11A6BA8BD584 /* Pods_Antarctica.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE78E30D096EB6C8DE609148 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E5935455422E8DC4919A09E5 /* Pods-Antarctica.debug.xcconfig */,
+				A4428EA2594AD044F74356A1 /* Pods-Antarctica.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -91,9 +108,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 663E13F62269022600C866AD /* Build configuration list for PBXNativeTarget "Antarctica" */;
 			buildPhases = (
+				3AF7F0AB1B139F461596E916 /* [CP] Check Pods Manifest.lock */,
 				663E13E02269022400C866AD /* Sources */,
 				663E13E12269022400C866AD /* Frameworks */,
 				663E13E22269022400C866AD /* Resources */,
+				A4A80B2E69EBFD7979139FA7 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -149,6 +168,53 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3AF7F0AB1B139F461596E916 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Antarctica-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A4A80B2E69EBFD7979139FA7 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Antarctica/Pods-Antarctica-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Antarctica/Pods-Antarctica-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		663E13E02269022400C866AD /* Sources */ = {
@@ -304,6 +370,7 @@
 		};
 		663E13F72269022600C866AD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E5935455422E8DC4919A09E5 /* Pods-Antarctica.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -333,6 +400,7 @@
 		};
 		663E13F82269022600C866AD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A4428EA2594AD044F74356A1 /* Pods-Antarctica.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
